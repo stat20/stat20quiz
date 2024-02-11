@@ -1,10 +1,20 @@
-title: Stat20quiz
+title: stat20quiz
 author: andrewpbray
 version: 1.0.0
 quarto-required: ">=1.4.0"
 contributes:
   formats:
     pdf:
-      toc: true
-      include-in-header: header.tex
-
+      include-in-header:
+        - text: |
+            \usepackage{multicol}
+      documentclass: exam
+      template-partials:
+        - before-body.tex
+      fontsize: 10pt
+      margin-top: 0.3in
+      margin-left: 0.8in
+      margin-right: 0.8in
+      margin-bottom: 0.3in
+      filters:
+        - stat20quiz.lua
