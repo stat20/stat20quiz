@@ -1,5 +1,6 @@
 
 function makeTF(doc)
+    --quarto.log.output(">>>", doc.blocks)
     -- Convert ## to appropriate latex
     local blocks = {} -- New table to hold the modified list of blocks
     local i = 1 -- Iterator for the while loop
@@ -43,8 +44,6 @@ function makeTF(doc)
 
     -- Replace the original document blocks with the modified list
     doc.blocks = blocks
-    
-    quarto.log.output(">>>", doc.blocks)
 
     return doc
 end
@@ -57,47 +56,101 @@ function makeQuestionsEnv(doc)
         local beginQuestions = '\\begin{questions}\n'
         local endQuestions = '\\end{questions}\n'
 
-        -- Insert the beginQuestions command at the start of the document
         table.insert(doc.blocks, 1, pandoc.RawBlock('latex', beginQuestions))
-        -- Append the endQuestions command at the end of the document
         table.insert(doc.blocks, pandoc.RawBlock('latex', endQuestions))
     end
-    
-    quarto.log.output(">>>", doc.blocks)
     
     return doc
 end
 
+
 function makeMC(list)
     local blocks = {}
-    
-    -- Add the beginning of the checkboxes environment
-    table.insert(blocks, pandoc.RawBlock('latex', '\\begin{checkboxes}'))
+    -- track number of column breaks
+    local nCB = 0
     
     for _, item in ipairs(list.content) do
-        -- Start with the \choice command for each list item
         local choicePrefix = pandoc.RawInline('latex', '\\choice ')
+        local plainContent = {choicePrefix}
+        local hasCB, startingInd = hasColBreak(item)
         
-        -- Initialize the paragraph content with the choicePrefix
-        local paraContent = {choicePrefix}
-
-        -- Assuming each item contains a list of inline elements or single blocks that need to be handled
-        for _, block in ipairs(item) do
-            if block.t == 'Plain' or block.t == 'Para' then
-                for _, inline in ipairs(block.content) do
-                    table.insert(paraContent, inline)
-                end
-            end
+        if hasCB then
+            -- only copy up to CB delimiter
+            copyInlines(item, plainContent, startingInd)
+        else
+            copyInlines(item, plainContent)
         end
         
-        local para = pandoc.Para(paraContent)
-        table.insert(blocks, para)
+        table.insert(blocks, pandoc.Plain(plainContent))
+        
+        if hasCB then
+            table.insert(blocks, pandoc.RawBlock('latex', '\\columnbreak'))
+            nCB = nCB + 1
+        end
     end
     
-    -- Add the end of the checkboxes environment
+    if nCB > 0 then
+        multiColStr = '\\begin{multicols}{' .. nCB + 1 .. '}'
+        table.insert(blocks, 1, pandoc.RawBlock('latex', multiColStr))
+        table.insert(blocks, pandoc.RawBlock('latex', '\\end{multicols}'))
+    end
+
+    table.insert(blocks, 1, pandoc.RawBlock('latex', '\\begin{checkboxes}'))
     table.insert(blocks, pandoc.RawBlock('latex', '\\end{checkboxes}'))
     
     return blocks
+end
+
+
+function hasColBreak(item)
+    local colBreakParts = 0
+    local partsInd = 0
+    local startingInd = nil
+    
+    for _, inline in ipairs(item[1].content) do
+
+        if inline.t == 'SoftBreak' then
+          colBreakParts = 1
+          partsInd = _
+          startingInd = _
+        end
+            
+        if colBreakParts == 1 and _ == partsInd + 1 and inline.t == 'Str' and inline.text == '*' then
+          colBreakParts = 2
+          partsInd = _
+        end
+            
+        if colBreakParts == 2 and _ == partsInd + 1 and inline.t == 'Space' then
+          colBreakParts = 3
+          partsInd = _
+        end
+
+        if colBreakParts == 3 and _ == partsInd + 1 and inline.t == 'Str' and inline.text == '*' then
+          colBreakParts = 4
+          partsInd = _
+        end
+            
+        if colBreakParts == 4 and _ == partsInd + 1 and inline.t == 'Space' then
+          colBreakParts = 5
+          partsInd = _
+        end
+
+        if colBreakParts == 5 and _ == partsInd + 1 and inline.t == 'Str' and inline.text == '*' then
+          return true, startingInd
+        end
+    end
+    
+    return false, nil
+end
+
+function copyInlines(item, plainContent, stopAt)
+    for _, inline in ipairs(item[1].content) do
+        if stopAt ~= nil and stopAt == _ then
+          break
+        else
+          table.insert(plainContent, inline)
+        end
+    end
 end
 
 
