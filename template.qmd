@@ -7,15 +7,30 @@ format:
 
 ## {.tf}
 
-Predicting
+The *mean* is a measure of spread.
 
-## 
+## {.tf}
 
-Multiple Choice
+The *mode* is a measure of skew.
 
-- orange
+
+##
+
+What is the definition of a *p-value*??
+
+- The probability that the null hypothesis is true.
+- The probability of observing our test statistic or more extreme when the null hypothesis is true.
+- The probability of observing our test statistic or more extreme when the null hypothesis is false.
+
+
+##
+
+Which are measures of center?
+
+- SD
 * * *
-- blue
-- green
+- IQR
+* * *
+- Median
 
 
