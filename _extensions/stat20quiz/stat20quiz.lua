@@ -1,14 +1,18 @@
 
-function makeTF(doc)
-    --quarto.log.output(">>>", doc.blocks)
+function makeQuestions(doc)
     -- Convert ## to appropriate latex
     local blocks = {} -- New table to hold the modified list of blocks
-    local i = 1 -- Iterator for the while loop
+    local i = 1
+    local firstQInd = 1
 
     while i <= #doc.blocks do
         local block = doc.blocks[i]
         if block.t == "Header" and block.level == 2 then
-            -- Determine the LaTeX string based on the header class
+            -- log which block has the first question
+            if firstQInd == 1 then
+                firstQInd = i
+            end
+              
             local latexString
             if block.classes:includes('tf') then
                 latexString = "\\question \\rule{1.5cm}{0.15mm}"
@@ -33,8 +37,6 @@ function makeTF(doc)
             if not foundPara then
                 table.insert(blocks, pandoc.Para{pandoc.RawInline('latex', latexString)})
             end
-
-            -- Skip adding the current header to 'blocks' to remove it
         else
             -- Add all non-header blocks to the output list
             table.insert(blocks, block)
@@ -45,20 +47,17 @@ function makeTF(doc)
     -- Replace the original document blocks with the modified list
     doc.blocks = blocks
 
-    return doc
+    return doc, firstQInd
 end
 
 
-function makeQuestionsEnv(doc)
+function makeQuestionsEnv(doc, startInd)
     -- Wrap doc in questions environment
-    if FORMAT:match 'latex' then
-        -- LaTeX commands to start and end the questions environment
-        local beginQuestions = '\\begin{questions}\n'
-        local endQuestions = '\\end{questions}\n'
+    local beginQuestions = '\\begin{questions}\n'
+    local endQuestions = '\\end{questions}\n'
 
-        table.insert(doc.blocks, 1, pandoc.RawBlock('latex', beginQuestions))
-        table.insert(doc.blocks, pandoc.RawBlock('latex', endQuestions))
-    end
+    table.insert(doc.blocks, startInd, pandoc.RawBlock('latex', beginQuestions))
+    table.insert(doc.blocks, pandoc.RawBlock('latex', endQuestions))
     
     return doc
 end
@@ -156,11 +155,11 @@ end
 
 
 function makeQuiz(doc)
-    -- Apply transformations for true/false questions
-    doc = makeTF(doc)
+    -- Turn ## into \question
+    doc, firstQInd = makeQuestions(doc)
     
     -- Wrap the document in a questions environment
-    doc = makeQuestionsEnv(doc)
+    doc = makeQuestionsEnv(doc, firstQInd)
     
     return doc
 end
