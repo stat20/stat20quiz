@@ -79,7 +79,7 @@ format:
 ---
 ```
 
-This is space for 1-3 names.
+There is space for 1-3 names.
 
 ### Make versions
 
