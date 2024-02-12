@@ -152,6 +152,108 @@ function copyInlines(item, plainContent, stopAt)
     end
 end
 
+function makeDirBox(el)
+    if el.classes:includes('testversions') then
+      quarto.log.output(">>> ", el)
+    end
+  
+  
+    if el.classes:includes('directionsbox') then
+        local width = "5.5in" -- Default width
+
+        if el.attributes.width then
+            width = el.attributes.width
+        end
+        
+        --local latexStart = "\\begin{center}\n\\fbox{\\parbox{" .. width .. "}{\\centering\n"
+        local latexStart = "\\begin{center}\n\\fbox{\\centering\n"
+        local latexEnd = "}\n\\end{center}"
+        
+        table.insert(el.content, 1, pandoc.RawBlock('latex', latexStart))
+        table.insert(el.content, pandoc.RawBlock('latex', latexEnd))
+
+        return el
+    end
+    
+    return el
+end
+
+function addHeader(doc)
+  -- set defaults
+  local nNames = 1
+  local titleStr = ''
+  local versionStr = ''
+  
+  -- get meta data
+  if doc.meta['n-names'] then
+    nNames = doc.meta['n-names'][1].text
+  end
+  
+  if doc.meta['title'] then
+    titleStr = inlinesToString(doc.meta['title'])
+  end
+  
+  if doc.meta['version'] then
+    versionStr = doc.meta['version'][1].text
+  end
+  
+  -- create header content
+  local namesStr = string.rep('\\textsc{Name}: \\fbox{\\makebox[3.5cm]{\\strut}}', nNames, ' \\quad')
+  local headerStr = namesStr .. '\\hfill ' .. titleStr .. versionStr
+  
+  -- add header content
+  table.insert(doc.blocks, 1, pandoc.RawBlock('latex', headerStr))
+  
+  -- add horizontal rule
+  local hRuleStr = '\\noindent\\rule{17.5cm}{0.4pt}\n\\vspace{2mm}'
+  table.insert(doc.blocks, 2, pandoc.RawBlock('latex', hRuleStr))
+  
+  -- remove title block
+  --table.insert(doc.blocks, 1, pandoc.RawBlock('latex', '\\pagestyle{empty}'))
+  
+  return doc
+end
+
+function inlinesToString(inlines)
+    local textParts = {}
+    for _, inline in ipairs(inlines) do
+        if inline.text then
+            table.insert(textParts, inline.text)
+        elseif inline.t == "Space" then
+            table.insert(textParts, " ")
+        end
+    end
+    return table.concat(textParts)
+end
+
+function filterVersions(span)
+  if versionMeta == nil then
+    versionMeta = 'ZZQ'
+  end
+  
+  if hasVersionClass(span) then
+     if not span.classes:includes('v' .. versionMeta) then
+       return pandoc.Span({})
+     end
+  end
+  return span
+end
+
+function hasVersionClass(element)
+    for _, class in ipairs(element.classes) do
+        if class:match("^v[A-Z]$") then
+            return true
+        end
+    end
+    return false
+end
+
+function getVersion(meta)
+  if meta.version then
+    versionMeta = meta.version[1].text
+  end
+end
+
 
 
 function makeQuiz(doc)
@@ -161,12 +263,17 @@ function makeQuiz(doc)
     -- Wrap the document in a questions environment
     doc = makeQuestionsEnv(doc, firstQInd)
     
+    doc = addHeader(doc)
+    
     return doc
 end
 
 
 return {
+  {Meta = getVersion},
+  {Span = filterVersions,
+  Div = makeDirBox,
   BulletList = makeMC,
-  Pandoc = makeQuiz
+  Pandoc = makeQuiz}
 }
 
