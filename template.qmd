@@ -1,22 +1,32 @@
 ---
 title: Quiz 1
-course: Stat 20
 format:
-  stat20quiz-pdf: default
+  stat20quiz-pdf:
+      n-names: 3
+      version: A
 ---
+
+:::{.directionsbox}
+Clearly write *True* or *False* on each blank line below.
+:::
 
 ## {.tf}
 
-The *mean* is a measure of spread.
+The *mean* is a measure of [spread]{.vA .vB}[center]{.vC .vD}.
 
 ## {.tf}
 
 The *mode* is a measure of skew.
 
+\vspace{3mm}
+
+:::{.directionsbox}
+Fill in the bubble of correct answer(s). Select all that apply.
+:::
 
 ##
 
-What is the definition of a *p-value*??
+What is the definition of a *p-value*?
 
 - The probability that the null hypothesis is true.
 - The probability of observing our test statistic or more extreme when the null hypothesis is true.
