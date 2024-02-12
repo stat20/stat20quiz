@@ -12,7 +12,7 @@ contributes:
       template-partials:
         - before-body.tex
       fontsize: 10pt
-      margin-top: 0.3in
+      margin-top: 0.2in
       margin-left: 0.8in
       margin-right: 0.8in
       margin-bottom: 0.3in
