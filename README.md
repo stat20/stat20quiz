@@ -64,7 +64,63 @@ Which are measures of center?
 - Median
 ```
 
-## Example
+### Add name boxes
+
+The template defaults to having one box in the header for a name. This can be increased by using the `n-names` key in the document YAML.
+
+Example:
+
+```yaml
+---
+title: Quiz 1
+format:
+  stat20quiz-pdf:
+    n-names: 3
+---
+```
+
+This is space for 1-3 names.
+
+### Make versions
+
+You can make different versions, A-Z, by adding the version capital letter under the version key.
+
+Example:
+
+```yaml
+---
+title: Quiz 1
+format:
+  stat20quiz-pdf:
+    version: A
+---
+```
+
+This version will appear at the right side of the header after the `title`.
+
+You can write version-specific inline content by wrapping it in a bracketed span and giving it a class of the version letter: `.vA` through `.vZ`.
+
+Example:
+
+```
+The *mean* is a measure of [spread]{.vA}[center]{.vB}.
+```
+
+When `version: A` in the document YAML, that line will read, `the *mean* is a measure of spread`. When `version: B`, it will read `the *mean* is a measure of center`. Note that you can add multiple version classes to the same span.
+
+### Add Directions
+
+You can draw attention to directions by wrapping the text is a fenced div with the class `.directionsbox`.
+
+Example:
+
+```markdown
+:::{.directionsbox}
+Clearly write *True* or *False* on each blank line below.
+:::
+```
+
+## Try the template!
 
 See [template.qmd](template.qmd) for an example of this functionality.
 
