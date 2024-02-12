@@ -8,6 +8,11 @@ quarto use template stat20/stat20quiz
 
 This will install the extension and create an example qmd file that you can use as a starting place for your quiz.
 
+## Try the template!
+
+See [template.qmd](template.qmd) for an example of all of the features of this format. Read more about them below.
+
+
 ## Using
 
 ### Create a new question
@@ -119,8 +124,4 @@ Example:
 Clearly write *True* or *False* on each blank line below.
 :::
 ```
-
-## Try the template!
-
-See [template.qmd](template.qmd) for an example of this functionality.
 
