@@ -200,7 +200,7 @@ function addHeader(doc)
   
   -- create header content
   local namesStr = string.rep('\\textsc{Name}: \\fbox{\\makebox[3.5cm]{\\strut}}', nNames, ' \\quad')
-  local headerStr = namesStr .. '\\hfill ' .. titleStr .. versionStr
+  local headerStr = namesStr .. '\\hfill ' .. titleStr .. ' \\, {\\Large ' .. versionStr .. '}'
   
   -- add header content
   table.insert(doc.blocks, 1, pandoc.RawBlock('latex', headerStr))
