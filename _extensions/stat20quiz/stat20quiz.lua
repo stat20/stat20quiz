@@ -15,7 +15,8 @@ function makeQuestions(doc)
               
             local latexString
             if block.classes:includes('tf') then
-                latexString = "\\question \\rule{1.5cm}{0.15mm}"
+                --latexString = "\\question \\rule{1.5cm}{0.15mm}"
+                latexString = "\\question \\begin{tikzpicture}[baseline={([yshift=-.7ex]circle.center)}] \n \\node[draw,circle,inner sep=0pt,minimum size=3mm] (circle) {}; \n \\node at (circle.center) {\\fontsize{2.5mm}{3mm}\\selectfont T}; \n \\end{tikzpicture}\n \\begin{tikzpicture}[baseline={([yshift=-.7ex]circle.center)}] \n \\node[draw,circle,inner sep=0pt,minimum size=3mm] (circle) {}; \n \\node at (circle.center) {\\fontsize{2.5mm}{3mm}\\selectfont F}; \n \\end{tikzpicture}"
             else
                 latexString = "\\question"
             end

@@ -8,6 +8,7 @@ contributes:
       include-in-header:
         - text: |
             \usepackage{multicol}
+            \usepackage{tikz}
       documentclass: exam
       template-partials:
         - before-body.tex
