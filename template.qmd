@@ -43,4 +43,12 @@ Which are measures of center?
 * * *
 - Median
 
+## {.select-all}
+
+Which are the names of US states?
+
+- California
+- Italy
+- Alabama
+- Canada
 
