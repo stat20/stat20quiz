@@ -29,14 +29,13 @@ What is the definition of a *p-value*?
 - The probability of observing our test statistic or more extreme when the null hypothesis is true.
 - The probability of observing our test statistic or more extreme when the null hypothesis is false.
 
+## {.select-all}
+
+Which are the names of US states?
 
 :::{.directionsbox}
 Fill in the checkbox of correct answer(s). Select all that apply.
 :::
-
-## {.select-all}
-
-Which are the names of US states?
 
 - California
 - Italy
