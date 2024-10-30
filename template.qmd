@@ -20,9 +20,6 @@ The *mode* is a measure of skew.
 
 \vspace{3mm}
 
-:::{.directionsbox}
-Fill in the bubble of correct answer(s). Select all that apply.
-:::
 
 ##
 
@@ -33,15 +30,9 @@ What is the definition of a *p-value*?
 - The probability of observing our test statistic or more extreme when the null hypothesis is false.
 
 
-##
-
-Which are measures of center?
-
-- SD
-* * *
-- IQR
-* * *
-- Median
+:::{.directionsbox}
+Fill in the checkbox of correct answer(s). Select all that apply.
+:::
 
 ## {.select-all}
 
@@ -52,3 +43,24 @@ Which are the names of US states?
 - Alabama
 - Canada
 
+
+:::{.directionsbox}
+Fill in the checkbox of correct answer(s). Select all that apply.
+:::
+## {.select-all}
+
+Which are measures of center?
+
+- SD
+* * *
+- IQR
+* * *
+- Median
+
+##
+
+What is the definition of a *p-value*?
+
+- The probability that the null hypothesis is true.
+- The probability of observing our test statistic or more extreme when the null hypothesis is true.
+- The probability of observing our test statistic or more extreme when the null hypothesis is false.
