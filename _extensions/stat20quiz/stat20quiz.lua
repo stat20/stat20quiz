@@ -17,8 +17,10 @@ function makeQuestions(doc)
             if block.classes:includes('tf') then
                 --latexString = "\\question \\rule{1.5cm}{0.15mm}"
                 latexString = "\\question \\begin{tikzpicture}[baseline={([yshift=-.7ex]circle.center)}] \n \\node[draw,circle,inner sep=0pt,minimum size=3mm] (circle) {}; \n \\node at (circle.center) {\\fontsize{2.5mm}{3mm}\\selectfont T}; \n \\end{tikzpicture}\n \\begin{tikzpicture}[baseline={([yshift=-.7ex]circle.center)}] \n \\node[draw,circle,inner sep=0pt,minimum size=3mm] (circle) {}; \n \\node at (circle.center) {\\fontsize{2.5mm}{3mm}\\selectfont F}; \n \\end{tikzpicture}"
+            elseif block.classes:includes('select-all') then
+                latexString = "\\checkboxchar{$\\Box$}\n \\question"
             else
-                latexString = "\\question"
+                latexString = "\\checkboxchar{$\\bigcirc$}\n \\question"
             end
 
             -- Look for the next Para block or the next level two header
@@ -95,6 +97,7 @@ function makeMC(list)
         table.insert(blocks, pandoc.RawBlock('latex', '\\end{multicols}'))
     end
 
+    
     table.insert(blocks, 1, pandoc.RawBlock('latex', '\\begin{checkboxes}'))
     table.insert(blocks, pandoc.RawBlock('latex', '\\end{checkboxes}'))
     
