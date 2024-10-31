@@ -69,6 +69,22 @@ Which are measures of center?
 - Median
 ```
 
+### Create checkboxes
+
+You can change the shape used to indicate each choice in a multiple choice question by adding the `.select-all` class to the question.
+
+Example:
+```markdown
+## {.select-all}
+
+Which are the names of US states?
+
+- California
+- Italy
+- Alabama
+- Canada
+```
+
 ### Add name boxes
 
 The template defaults to having one box in the header for a name. This can be increased by using the `n-names` key in the document YAML.
